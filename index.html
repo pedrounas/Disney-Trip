@@ -32,15 +32,8 @@
         color: var(--text-light);
         overflow-x: hidden;
         min-height: 100vh;
-        background: linear-gradient(
-            135deg,
-            rgba(28, 46, 74, 0.85),
-            rgba(44, 30, 74, 0.85)
-          ),
-          url("https://news.disneylandparis.com//app/uploads/2023/10/N039041.jpg");
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
+        /* O fundo do body agora é apenas uma cor escura */
+        background-color: var(--primary-blue);
       }
 
       h1,
@@ -124,9 +117,20 @@
 
       /* --- 3. TIMELINE --- */
       .timeline-section {
-        padding: 4rem 1.5rem;
-        max-width: 800px;
-        margin: 0 auto;
+        padding: 6rem 1.5rem;
+        position: relative;
+        /* A imagem de fundo agora vive aqui */
+        background: linear-gradient(
+            135deg,
+            rgba(28, 46, 74, 0.9),
+            rgba(44, 30, 74, 0.9)
+          ),
+          url("https://news.disneylandparis.com//app/uploads/2023/10/N039041.jpg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        /* Adicionei uma borda superior brilhante para separar as secções */
+        border-top: 1px solid var(--magic-gold);
       }
 
       .timeline-container {
@@ -150,7 +154,7 @@
 
       .timeline-icon {
         position: absolute;
-        left: -2.95rem;
+        left: -3.5rem;
         top: 0;
         width: 3rem;
         height: 3rem;
@@ -188,6 +192,7 @@
             rgba(44, 30, 74, 0.7)
           ),
           url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000&auto=format&fit=crop");
+        border: 2px solid var(--magic-gold);
       }
 
       #card-hotel {
@@ -461,11 +466,10 @@
           </div>
         </div>
       </div>
+      <footer>
+        <p>O mais difícil é esperar pelo dia ✨</p>
+      </footer>
     </main>
-
-    <footer>
-      <p>O mais difícil é esperar pelo dia ✨</p>
-    </footer>
 
     <script>
       // --- DATA DE PARTIDA ---
