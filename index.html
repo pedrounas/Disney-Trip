@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uma Surpresa Mágica ✨</title>
+    <style>
+      /* --- 1. FONTES E VARIÁVEIS --- */
+      @import url("https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Lato:wght@300;400;700&display=swap");
+
+      :root {
+        --primary-blue: #1c2e4a;
+        --deep-purple: #2c1e4a;
+        --magic-gold: #f2c94c;
+        --soft-pink: #dfa6bf;
+        --text-light: #fdfdfd;
+        --glass-bg: rgba(255, 255, 255, 0.15);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Lato", sans-serif;
+        color: var(--text-light);
+        overflow-x: hidden;
+        min-height: 100vh;
+        background: linear-gradient(
+            135deg,
+            rgba(28, 46, 74, 0.85),
+            rgba(44, 30, 74, 0.85)
+          ),
+          url("https://news.disneylandparis.com//app/uploads/2023/10/N039041.jpg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: "Cinzel Decorative", cursive;
+      }
+
+      #canvas-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      /* --- 2. HERO SECTION --- */
+      .hero {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 2rem;
+        position: relative;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+        color: var(--magic-gold);
+        text-shadow: 0 0 20px rgba(242, 201, 76, 0.5);
+        margin-bottom: 0.5rem;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      /* Contador como Subtítulo */
+      .countdown-subtitle {
+        font-size: 1.4rem;
+        margin-bottom: 2.5rem;
+        color: var(--soft-pink);
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .cta-button {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 2px solid var(--magic-gold);
+        color: white;
+        padding: 1rem 3rem;
+        font-family: "Cinzel Decorative", cursive;
+        font-size: 1.2rem;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 20px rgba(242, 201, 76, 0.2);
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .cta-button:hover {
+        background: var(--magic-gold);
+        color: var(--deep-purple);
+        box-shadow: 0 0 30px rgba(242, 201, 76, 0.5);
+        transform: scale(1.05);
+      }
+
+      .scroll-hint {
+        position: absolute;
+        bottom: 30px;
+        opacity: 0.7;
+        animation: bounce 2s infinite;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      /* --- 3. TIMELINE --- */
+      .timeline-section {
+        padding: 4rem 1.5rem;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .timeline-container {
+        position: relative;
+        padding-left: 2rem;
+        border-left: 3px solid rgba(242, 201, 76, 0.3);
+      }
+
+      .timeline-item {
+        position: relative;
+        margin-bottom: 4rem;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+      }
+
+      .timeline-item.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .timeline-icon {
+        position: absolute;
+        left: -2.95rem;
+        top: 0;
+        width: 3rem;
+        height: 3rem;
+        background: var(--primary-blue);
+        border: 2px solid var(--magic-gold);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        z-index: 2;
+      }
+
+      .card {
+        background: var(--glass-bg);
+        border-radius: 15px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card-with-bg {
+        background-color: transparent;
+        background-size: cover;
+        background-position: center;
+        backdrop-filter: none;
+      }
+
+      #card-flight {
+        background-image: linear-gradient(
+            to right,
+            rgba(28, 46, 74, 0.85),
+            rgba(44, 30, 74, 0.7)
+          ),
+          url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000&auto=format&fit=crop");
+      }
+
+      #card-hotel {
+        background-image: linear-gradient(
+            to right,
+            rgba(28, 46, 74, 0.8),
+            rgba(44, 30, 74, 0.5)
+          ),
+          url("https://triptomagic.com/wp-content/uploads/2024/04/disneyland-paris-hotel-disneys-newport-bay-club-01.webp");
+        border: 2px solid var(--magic-gold);
+      }
+
+      .card h3 {
+        color: var(--magic-gold);
+        margin-bottom: 0.5rem;
+      }
+      .card p {
+        line-height: 1.6;
+        color: #f0f0f0;
+      }
+      .card .date-tag {
+        display: inline-block;
+        background: var(--soft-pink);
+        color: var(--deep-purple);
+        font-size: 0.75rem;
+        font-weight: bold;
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+        margin-bottom: 1rem;
+      }
+
+      footer {
+        text-align: center;
+        padding: 4rem 2rem;
+        font-family: "Cinzel Decorative", cursive;
+        color: var(--soft-pink);
+      }
+
+      .music-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--magic-gold);
+        color: var(--magic-gold);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 100;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
+      }
+
+      @media (min-width: 768px) {
+        .hero-title {
+          font-size: 4rem;
+        }
+        .timeline-container::before {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 0;
+          bottom: 0;
+          width: 3px;
+          background: rgba(242, 201, 76, 0.3);
+          transform: translateX(-50%);
+        }
+        .timeline-item {
+          width: 50%;
+          padding: 0 2rem;
+        }
+        .timeline-item:nth-child(odd) {
+          margin-left: auto;
+          text-align: left;
+        }
+        .timeline-item:nth-child(even) {
+          margin-right: auto;
+          text-align: right;
+        }
+        .timeline-item:nth-child(odd) .timeline-icon {
+          left: -3.5rem;
+        }
+        .timeline-item:nth-child(even) .timeline-icon {
+          right: -3.5rem;
+          left: auto;
+        }
+      }
+
+      /* --- ESTILO PAINEL DE AEROPORTO --- */
+      .airport-display {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .flap-unit {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .flap-unit span {
+        font-size: 0.6rem;
+        color: var(--magic-gold);
+        letter-spacing: 1px;
+        font-weight: bold;
+      }
+
+      .flap-card {
+        background: #111; /* Cor de fundo das placas */
+        color: #eee;
+        font-family: "Courier New", Courier, monospace; /* Fonte mono para parecer mecânico */
+        font-size: 1.8rem;
+        font-weight: bold;
+        padding: 10px 8px;
+        border-radius: 6px;
+        position: relative;
+        border: 1px solid #333;
+        min-width: 50px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      }
+
+      /* A linha horizontal no meio da placa */
+      .flap-card::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: rgba(0, 0, 0, 0.6);
+        box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+      }
+
+      /* Animação simples quando o número muda */
+      .changed {
+        animation: flip 0.4s ease-in-out;
+      }
+
+      @keyframes flip {
+        0% {
+          transform: rotateX(0deg);
+        }
+        50% {
+          transform: rotateX(-90deg);
+          background: #222;
+        }
+        100% {
+          transform: rotateX(0deg);
+        }
+      }
+
+      .intro-text {
+        font-family: "Lato", sans-serif;
+        font-size: 1rem;
+        color: var(--magic-gold);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 1rem; /* Espaço entre a frase e o contador */
+        opacity: 0.9;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas-overlay"></canvas>
+
+    <audio id="bg-music" loop>
+      <source src="magic.mp3" type="audio/mpeg" />
+    </audio>
+    <button class="music-toggle" id="music-btn">♪</button>
+
+    <section class="hero">
+      <h1 class="hero-title">A nossa próxima aventura ✨</h1>
+      <p class="intro-text">A magia começa em...</p>
+      <div class="airport-display" id="timer">
+        <div class="flap-unit">
+          <div class="flap-card" id="days">00</div>
+          <span>DIAS</span>
+        </div>
+        <div class="flap-unit">
+          <div class="flap-card" id="hours">00</div>
+          <span>HORAS</span>
+        </div>
+        <div class="flap-unit">
+          <div class="flap-card" id="minutes">00</div>
+          <span>MIN</span>
+        </div>
+        <div class="flap-unit">
+          <div class="flap-card" id="seconds">00</div>
+          <span>SEG</span>
+        </div>
+      </div>
+
+      <button
+        class="cta-button"
+        onclick="document.getElementById('timeline').scrollIntoView();"
+      >
+        Descobrir
+      </button>
+
+      <div class="scroll-hint">Desliza para explorar</div>
+    </section>
+
+    <main class="timeline-section" id="timeline">
+      <div class="timeline-container">
+        <div class="timeline-item">
+          <div class="timeline-icon">✈️</div>
+          <div class="card card-with-bg" id="card-flight">
+            <span class="date-tag">10 de Maio, 2026</span>
+            <h3>A Viagem Começa</h3>
+            <p>
+              Saímos do Porto no voo <strong>TP452</strong>. De manhã cedo a
+              nossa aventura começa para aproveitar o dia.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-icon">🏰</div>
+          <div class="card card-with-bg" id="card-hotel">
+            <span class="date-tag">10 - 13 de Maio, 2026</span>
+            <h3>Disneyland Paris</h3>
+            <p>
+              Vamos ficar no <strong>Newport Bay Club</strong>. Um lugar para
+              descansar, depois de dias nos parques a criar memórias que vão
+              ficar connosco para sempre.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-icon">🏡</div>
+          <div class="card card-with-bg" id="card-flight">
+            <span class="date-tag">13 de Maio, 2026</span>
+            <h3>Regresso a Casa</h3>
+            <p>
+              Voltamos no voo <strong>TP455</strong>, cansados mas felizes, com
+              fotos, lembranças e mais uma história nossa para guardar.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>O mais difícil é esperar pelo dia ✨</p>
+    </footer>
+
+    <script>
+      // --- DATA DE PARTIDA ---
+      const targetDate = new Date("May 10, 2026 09:00:00").getTime();
+
+      function updateTimer() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+          document.getElementById("timer").innerHTML = "É HORA DA MAGIA!";
+          return;
+        }
+
+        const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const h = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Atualiza os valores e adiciona a animação se o número mudar
+        updateFlap("days", d.toString().padStart(2, "0"));
+        updateFlap("hours", h.toString().padStart(2, "0"));
+        updateFlap("minutes", m.toString().padStart(2, "0"));
+        updateFlap("seconds", s.toString().padStart(2, "0"));
+      }
+
+      function updateFlap(id, value) {
+        const el = document.getElementById(id);
+        if (el.innerText !== value) {
+          el.innerText = value;
+          el.classList.remove("changed");
+          void el.offsetWidth; // Truque para reiniciar a animação CSS
+          el.classList.add("changed");
+        }
+      }
+      setInterval(updateTimer, 1000);
+      updateTimer();
+
+      // --- ANIMAÇÃO DE SCROLL ---
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) entry.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.15 }
+      );
+
+      document
+        .querySelectorAll(".timeline-item")
+        .forEach((item) => observer.observe(item));
+
+      // --- PARTÍCULAS / ESTRELAS ---
+      const canvas = document.getElementById("canvas-overlay");
+      const ctx = canvas.getContext("2d");
+      let particles = [];
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2 + 0.1;
+          this.speedX = Math.random() * 0.5 - 0.25;
+          this.opacity = Math.random();
+          this.fadeSpeed = 0.005 + Math.random() * 0.01;
+          this.fadingIn = true;
+        }
+        update() {
+          this.y -= 0.2;
+          this.x += this.speedX;
+          if (this.fadingIn) {
+            this.opacity += this.fadeSpeed;
+            if (this.opacity >= 1) this.fadingIn = false;
+          } else {
+            this.opacity -= this.fadeSpeed;
+            if (this.opacity <= 0) {
+              this.fadingIn = true;
+              this.x = Math.random() * canvas.width;
+              this.y = canvas.height;
+            }
+          }
+          if (this.y < 0) this.y = canvas.height;
+        }
+        draw() {
+          ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p) => {
+          p.update();
+          p.draw();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // --- MÚSICA ---
+      const musicBtn = document.getElementById("music-btn");
+      const audio = document.getElementById("bg-music");
+      let isPlaying = false;
+
+      musicBtn.addEventListener("click", () => {
+        if (isPlaying) {
+          audio.pause();
+          musicBtn.textContent = "♪";
+        } else {
+          audio.play().catch(() => {});
+          musicBtn.textContent = "II";
+        }
+        isPlaying = !isPlaying;
+      });
+    </script>
+  </body>
+</html>
